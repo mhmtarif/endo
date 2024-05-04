@@ -27,7 +27,7 @@ defmodule Endo.Adapters.Postgres do
     preloads = [:columns, table_constraints: [:key_column_usage, :constraint_column_usage]]
 
     derive_preloads = fn %Table{table_name: name} = table ->
-      indexes = PgClass.query(collate_indexes: true, relname: name)
+      #indexes = PgClass.query(collate_indexes: true, relname: name)
       metadata = PgClass.query(relname: name, relkind: ~w(r t m f p))
       size = Size.query(relname: name, prefix: opts[:prefix])
 
@@ -36,7 +36,7 @@ defmodule Endo.Adapters.Postgres do
         | schema: opts[:prefix],
           size: repo.one(size),
           pg_class: repo.one(metadata),
-          indexes: repo.all(indexes)
+          indexes: []#repo.all(indexes)
       }
     end
 
